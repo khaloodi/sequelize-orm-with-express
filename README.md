@@ -85,4 +85,3 @@ db.Sequelize = Sequelize; //Assign the Sequelize module to a `Sequelize` propert
 
 module.exports = db; //export `db` object
 ```
-
