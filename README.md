@@ -65,6 +65,6 @@ const sequelize = new Sequelize({
 });
 ```
 
-The Sequelize CLI sets up configuration for you in config.json. For example, the dialect property specifies the version of SQL you're using (the SQL dialect of the database) for each environment. Since SQLite is a file-based database that doesn't require username and password credentials or a host, you use the storage key to specify the file path or the storage path for SQLite.
+The Sequelize CLI sets up configuration for you in `'config.json'`. For example, the dialect property specifies the version of SQL you're using (the SQL dialect of the database) for each environment. Since SQLite is a file-based database that doesn't require username and password credentials or a host, you use the storage key to specify the file path or the storage path for SQLite.
 
-For example, the value 'development.db' will create a database in your project named 'development'.
+For example, the value `'development.db'` creates a database named 'development'.
