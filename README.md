@@ -55,3 +55,16 @@ Production: For the live site using the "actual data" your application needs
 ```
 
 By default, config.json is configured with boilerplate credentials for a MySQL database. But the project might use other relational databases -- in this case, SQLite.
+
+You can specify the options shown in the examples in your config.json file for each of the three environments. Ideally, in development, you use the same database you use in production. But it's not uncommon to use different databases. For instance, you might use SQLite in development and testing so that you don’t need to install and run a large database on your computer, and use [PostgreSQL](https://www.postgresql.org/) for a more powerful Linux server in production.
+
+```JavaScript
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: 'movies.db'
+});
+```
+
+The Sequelize CLI sets up configuration for you in config.json. For example, the dialect property specifies the version of SQL you're using (the SQL dialect of the database) for each environment. Since SQLite is a file-based database that doesn't require username and password credentials or a host, you use the storage key to specify the file path or the storage path for SQLite.
+
+For example, the value 'development.db' will create a database in your project named 'development'.
