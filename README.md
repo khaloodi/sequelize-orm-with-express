@@ -24,6 +24,8 @@ The config folder, which contains a file named config.json. This file holds the 
 Development: For when you're programming your app
 Testing: For running automated tests to make sure your code interacts correctly with the database
 Production: For the live site using the "actual data" your application needs
+
+```JavaScript
 {
   "development": {
     "username": "root",
@@ -50,4 +52,6 @@ Production: For the live site using the "actual data" your application needs
     "operatorsAliases": false
   }
 }
+```
+
 By default, config.json is configured with boilerplate credentials for a MySQL database. But the project might use other relational databases -- in this case, SQLite.
