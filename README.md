@@ -6,7 +6,7 @@ Node application using Sequelize and Express to display articles stored in a loc
 
 <br/>
 
-Web form to add articles:
+Web form to allow users to add articles to SQLite database:
 
 ![Alt text](/public/images/add_article.png?raw=true "Optional Title")
 
