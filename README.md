@@ -2,6 +2,11 @@
 
 CRUD app using Sequelize ORM & Express middleware to display articles stored in a local SQLite database.
 
+**Built With**
+- [Node](https://nodejs.org/)
+- [Express](https://expressjs.org/)
+- [Sequelize](https://sequelize.org/)
+
 ![Alt text](/public/images/index.png?raw=true "Optional Title")
 
 <br/>
