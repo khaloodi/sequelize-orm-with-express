@@ -1,12 +1,12 @@
 # Sequelize + Express
 
-Node application using Sequelize and Express to display articles stored in a local SQLite database.
+CRUD app using Sequelize ORM & Express middleware to display articles stored in a local SQLite database.
 
 ![Alt text](/public/images/index.png?raw=true "Optional Title")
 
 <br/>
 
-Web form to allow users to add articles to SQLite database:
+Web form allowing users to add articles stored in a SQLite database:
 
 ![Alt text](/public/images/add_article.png?raw=true "Optional Title")
 
