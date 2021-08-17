@@ -1,6 +1,6 @@
-# Sequelize + Express
+# Sequelize + Express App
 
-CRUD app using Sequelize ORM & Express middleware to display articles stored in a local SQLite database. Web form allows users to add articles stored in a SQLite database. Pug templates are used to display articles stored in database.
+CRUD app using Sequelize ORM & Express middleware to display articles stored in a local SQLite database. Web form allows users to add articles. Pug templates used to display articles stored in database.
 
 **Built With**
 - [Node](https://nodejs.org/)
