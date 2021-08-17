@@ -1,3 +1,6 @@
+![Alt text](/public/images/index.png?raw=true "Optional Title")
+![Alt text](/public/images/add_article.png?raw=true "Optional Title")
+
 # Overview
 
 Many development tools have what's called a CLI, or command-line interface, which is a special piece of software that's used to aid in the development process. Sequelize is no different, it has a useful command-line interface for initializing and bootstrapping your database project, creating models, database configuration files and more. The CLI operates with many relational databases like PostgreSQL, MySQL, MSSQL, and Sqlite.
