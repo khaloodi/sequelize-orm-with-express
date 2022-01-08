@@ -40,6 +40,7 @@ router.get('/', asyncHandler(async(req, res) => {
             ["createdAt", "DESC"]
         ]
     }); // display articles in descending order
+    // res.render("articles/index", { article: {}, title: "Sequelize-It!" });
     res.render("articles/index", { articles, title: "Sequelize-It!" });
 }));
 
