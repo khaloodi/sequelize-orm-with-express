@@ -34,6 +34,7 @@ And we want to use a try/catch statement in each handler to run the code that ne
 
 /* GET articles listing. */
 router.get('/', asyncHandler(async(req, res) => {
+    // Within the handler, we use Sequelize's findAll method to retrieve a collection of articles instead of a single article 
     const articles = await Article.findAll({
         order: [
             ["createdAt", "DESC"]
@@ -69,11 +70,12 @@ router.get("/:id", asyncHandler(async(req, res) => { // This route renders the a
     const article = await Article.findByPk(req.params.id); // FindByPk is an asynchronous call that returns a promise whose resolved value is the single instance retrieved by the primary key or id value
     // In Express Routes, you use route parameters to capture values specified in the URL path, req.params returns parameters in the matched route
     // In this case, we need the id value specified in the path. So pass the findByPk method, req.params.id.
-    // res.render("articles/show", { article: {}, title: article.title });
+    // res.render("articles/show", { article: {}, title: "Article Title" });
     // res.render("articles/show", { article: article, title: article.title });
     res.render("articles/show", { article, title: article.title });
     // above, in res.render, we'll render the article returned by findByPk within the article show view by replacing the empty object with the article variable Which is the single instance returned by findByPk, holding all the data of the article entry, like title, author, and body
     // NOTE: that data is made available to the view via local variables like article.title and article.body for instance. And since both the article key and value here are the same, you can use the object shorthand syntax by including just article.
+    // Check this route w/localhost:3000/articles/1 or the articles primary key
 }));
 
 /* Update an article. */
