@@ -65,8 +65,10 @@ router.get("/:id/edit", asyncHandler(async(req, res) => {
 }));
 
 /* GET individual article. */
-router.get("/:id", asyncHandler(async(req, res) => {
-    const article = await Article.findByPk(req.params.id);
+router.get("/:id", asyncHandler(async(req, res) => { // This route renders the articles show view and displays an article based on the id parameter in the URL path
+    const article = await Article.findByPk(req.params.id); // FindByPk is an asynchronous call that returns a promise whose resolved value is the single instance retrieved by the primary key or id value
+    // In Express Routes, you use route parameters to capture values specified in the URL path, req.params returns parameters in the matched route
+    // In this case, we need the id value specified in the path. So pass the findByPk method, req.params.id.
     res.render("articles/show", { article, title: article.title });
 }));
 
