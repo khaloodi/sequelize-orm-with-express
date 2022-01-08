@@ -36,10 +36,11 @@ And we want to use a try/catch statement in each handler to run the code that ne
 router.get('/', asyncHandler(async(req, res) => {
     // Within the handler, we use Sequelize's findAll method to retrieve a collection of articles instead of a single article 
     const articles = await Article.findAll({
+        // the findAll method takes an options object,  within that object, you can specify any number of criteria to filter the returned results, including their order
         order: [
-            ["createdAt", "DESC"]
+            ["createdAt", "DESC"] // display articles in descending order in localhost:3000/articles
         ]
-    }); // display articles in descending order
+    });
     // res.render("articles/index", { article: {}, title: "Sequelize-It!" });
     res.render("articles/index", { articles, title: "Sequelize-It!" });
 }));
