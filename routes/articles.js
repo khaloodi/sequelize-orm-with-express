@@ -51,7 +51,12 @@ router.get('/new', (req, res) => {
 router.post('/', asyncHandler(async(req, res) => {
     const article = await Article.create(req.body) // when DB builds and saves new article record, app should redirect to the newly created article
         // console.log(req.body)
+        // the sequelize create method builds a new model instance, which represents a database row & automatically stores its data in the db, Create is an asynchronous call that returns a promise
+        // Create requires an object with properties that map to the model attributes, or the ones defined here in Article.init
+        // The request body property returns an object containing the key value pairs of data submitted in the request body, in other words, the form data.
     res.redirect("/articles/" + article.id);
+    // When the database builds and saves the new article record, the app should redirect to the newly created article.
+    // Sequelize generates an auto-incrementing ID for each model instance or entry created. So in the res.redirect method, I'll add the article id to the URL path by concatenating article.id to the articles path.
 }));
 
 /* Edit article form. */
