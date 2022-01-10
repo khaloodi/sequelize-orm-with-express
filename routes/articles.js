@@ -126,15 +126,27 @@ router.get("/:id", asyncHandler(async(req, res) => { // This route renders the a
 
 /* Update an article. */
 router.post('/:id/edit', asyncHandler(async(req, res) => {
-    const article = await Article.findByPk(req.params.id);
     // The update method is also asynchronous and returns a promise:
-    if (article) {
-        await article.update(req.body) // So in the async handler we'll await its fulfilled promise, the updated article instance with await article.update
-            // The update method accepts an object with the key and values to update. So I'll pass it the request body or the updated form data with req.body.
-            // res.redirect("/articles/"); I' changed this line when I added the update method
-        res.redirect("/articles/" + article.id); // Once the update happens, the app will redirect to the individual article page via article.id.
-    } else {
-        res.sendStatus(404);
+    // const article = await Article.findByPk(req.params.id);
+    let article;
+    try {
+        article = await Article.findByPk(req.params.id);
+        if (article) {
+            await article.update(req.body) // So in the async handler we'll await its fulfilled promise, the updated article instance with await article.update
+                // The update method accepts an object with the key and values to update. So I'll pass it the request body or the updated form data with req.body.
+                // res.redirect("/articles/"); I' changed this line when I added the update method
+            res.redirect("/articles/" + article.id); // Once the update happens, the app will redirect to the individual article page via article.id.
+        } else {
+            res.sendStatus(404);
+        }
+    } catch (error) {
+        if (error.name === 'SequelizeValidationError') {
+            article = await Article.build(req.body)
+            article.id = req.params.id; // make sure correct article gets updated
+            // In this case, when building the Article instance, we explicitly add the article ID, since the ID is in the URL as a parameter (:id) and not in req.body. This ensures that the correct article gets updated.
+        } else {
+            throw error;
+        }
     }
 }));
 
