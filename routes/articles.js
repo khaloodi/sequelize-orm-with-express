@@ -65,7 +65,8 @@ router.post('/', asyncHandler(async(req, res) => {
 
 /* Edit article form. */
 router.get("/:id/edit", asyncHandler(async(req, res) => {
-    res.render("articles/edit", { article: {}, title: "Edit Article" });
+    const article = await Article.findByPk(req.params.id);
+    res.render("articles/edit", { article, title: "Edit Article" });
 }));
 
 /* GET individual article. */
@@ -83,16 +84,26 @@ router.get("/:id", asyncHandler(async(req, res) => { // This route renders the a
 
 /* Update an article. */
 router.post('/:id/edit', asyncHandler(async(req, res) => {
-    res.redirect("/articles/");
+    const article = await Article.findByPk(req.params.id);
+    // The update method is also asynchronous and returns a promise:
+    await article.update(req.body) // So in the async handler we'll await its fulfilled promise, the updated article instance with await article.update
+        // The update method accepts an object with the key and values to update. So I'll pass it the request body or the updated form data with req.body.
+        // res.redirect("/articles/"); I' changed this line when I added the update method
+    res.redirect("/articles/" + article.id); // Once the update happens, the app will redirect to the individual article page via article.id.
 }));
 
 /* Delete article form. */
 router.get("/:id/delete", asyncHandler(async(req, res) => {
-    res.render("articles/delete", { article: {}, title: "Delete Article" });
+    const article = await Article.findByPk(req.params.id);
+    // res.render("articles/delete", { article: {}, title: "Delete Article" });
+    res.render("articles/delete", { article, title: "Delete Article" });
 }));
 
 /* Delete individual article. */
 router.post('/:id/delete', asyncHandler(async(req, res) => {
+    const article = await Article.findByPk(req.params.id);
+    await article.destroy(); // Once the article is found I can destroy it. The destroy method is also an asynchronous call returning a promise. So the handler will await.article.destroy. 
+    // Once the promise is fulfilled or the entry is deleted from the database, the router will redirect to the articles path.
     res.redirect("/articles");
 }));
 
