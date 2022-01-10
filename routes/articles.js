@@ -9,13 +9,15 @@ const Article = require('../models').Article; // include the article model, requ
 //
 
 /* Handler function to wrap each route. In other words, we are abstracting away the try catch for all of our calls by creating an asyncHandler function and using or implimenting it in all of our calls.*/
-function asyncHandler(cb) {
+function asyncHandler(cb) { // catches an error (or a rejected promise) that occurs in a route and forwards the error to the global error handler (in app.js) with the next() method
     return async(req, res, next) => {
         try {
             await cb(req, res, next)
         } catch (error) {
             // res.status(500).send(error) // this line/catch statement will send a 500 error or internal server error to the user if an exception is thrown in the try block, or in any of the handler functions           
-            next(error); // Forward error to the global error handler
+            // With only next(error) inside of the catch block, if you visit an article that does not exist in the database (/articles/101, for example), or run findByPk() with an invalid ID, the response returns errors and a 500 status code. The server cannot process the request because the entry is not found.
+            next(error); // Forward error to the global error handler, I believe this operates the same as res.status(500).send(error)
+
         }
     }
 }
@@ -66,7 +68,13 @@ router.post('/', asyncHandler(async(req, res) => {
 /* Edit article form. */
 router.get("/:id/edit", asyncHandler(async(req, res) => {
     const article = await Article.findByPk(req.params.id);
-    res.render("articles/edit", { article, title: "Edit Article" });
+    if (article) {
+        res.render("articles/edit", { article, title: "Edit Article" });
+    } else {
+        res.sendStatus(404);
+    }
+    // res.render("articles/edit", { article, title: "Edit Article" });
+    // line above was before I added error checking with the if block
 }));
 
 /* GET individual article. */
@@ -76,35 +84,56 @@ router.get("/:id", asyncHandler(async(req, res) => { // This route renders the a
     // In this case, we need the id value specified in the path. So pass the findByPk method, req.params.id.
     // res.render("articles/show", { article: {}, title: "Article Title" });
     // res.render("articles/show", { article: article, title: article.title });
-    res.render("articles/show", { article, title: article.title });
+    // res.render("articles/show", { article, title: article.title });
     // above, in res.render, we'll render the article returned by findByPk within the article show view by replacing the empty object with the article variable Which is the single instance returned by findByPk, holding all the data of the article entry, like title, author, and body
     // NOTE: that data is made available to the view via local variables like article.title and article.body for instance. And since both the article key and value here are the same, you can use the object shorthand syntax by including just article.
     // Check this route w/localhost:3000/articles/1 or the articles primary key
+
+    // Handling ERRORS:
+    //instead send a 404 status code (or a Not Found error) to the client to let users know that the server is unable to locate the requested article
+    if (article) {
+        res.render("articles/show", { article, title: article.title });
+    } else {
+        res.sendStatus(404);
+    }
 }));
 
 /* Update an article. */
 router.post('/:id/edit', asyncHandler(async(req, res) => {
     const article = await Article.findByPk(req.params.id);
     // The update method is also asynchronous and returns a promise:
-    await article.update(req.body) // So in the async handler we'll await its fulfilled promise, the updated article instance with await article.update
-        // The update method accepts an object with the key and values to update. So I'll pass it the request body or the updated form data with req.body.
-        // res.redirect("/articles/"); I' changed this line when I added the update method
-    res.redirect("/articles/" + article.id); // Once the update happens, the app will redirect to the individual article page via article.id.
+    if (article) {
+        await article.update(req.body) // So in the async handler we'll await its fulfilled promise, the updated article instance with await article.update
+            // The update method accepts an object with the key and values to update. So I'll pass it the request body or the updated form data with req.body.
+            // res.redirect("/articles/"); I' changed this line when I added the update method
+        res.redirect("/articles/" + article.id); // Once the update happens, the app will redirect to the individual article page via article.id.
+    } else {
+        res.sendStatus(404);
+    }
 }));
 
 /* Delete article form. */
 router.get("/:id/delete", asyncHandler(async(req, res) => {
     const article = await Article.findByPk(req.params.id);
+    if (article) {
+        res.render("articles/delete", { article, title: "Delete Article" });
+    } else {
+        res.sendStatus(404);
+    }
     // res.render("articles/delete", { article: {}, title: "Delete Article" });
-    res.render("articles/delete", { article, title: "Delete Article" });
+    // res.render("articles/delete", { article, title: "Delete Article" });
 }));
 
 /* Delete individual article. */
 router.post('/:id/delete', asyncHandler(async(req, res) => {
     const article = await Article.findByPk(req.params.id);
-    await article.destroy(); // Once the article is found I can destroy it. The destroy method is also an asynchronous call returning a promise. So the handler will await.article.destroy. 
-    // Once the promise is fulfilled or the entry is deleted from the database, the router will redirect to the articles path.
-    res.redirect("/articles");
+    if (article) {
+        await article.destroy(); // Once the article is found I can destroy it. The destroy method is also an asynchronous call returning a promise. So the handler will await.article.destroy. 
+        // Once the promise is fulfilled or the entry is deleted from the database, the router will redirect to the articles path.
+        res.redirect("/articles");
+    } else {
+        res.sendStatus(404);
+    }
 }));
 
 module.exports = router;
