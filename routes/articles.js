@@ -68,8 +68,25 @@ router.post('/', asyncHandler(async(req, res) => {
     // the sequelize create method builds a new model instance, which represents a database row & automatically stores its data in the db, Create is an asynchronous call that returns a promise
     // Create requires an object with properties that map to the model attributes, or the ones defined here in Article.init
     // The request body property returns an object containing the key value pairs of data submitted in the request body, in other words, the form data.
+    let article;
+    try {
+        article = await Article.create(req.body);
+        res.redirect("/articles/" + article.id);
+    } catch (error) {
+        if (error.name === 'SequelizeValidationError') { // checking the error
+            article = await Article.build(req.body)
+            res.render("articles/new", { article, errors: error.errors, title: "New Article" })
+                /**
+                 * The Article.build() method used above will return an non-persistent (or unsaved) model instance. The built instance holds the properties / values of the Article being created via req.body. It will get stored in the database by the create() method once the user submits the form with a valid title.
 
-    res.redirect("/articles/" + article.id);
+                The errors property also gets passed into the view. The value is an errors array which Pug iterates over and renders. Open the file views/articles/errors.pug to review the template that renders validation errors.
+                 */
+        } else {
+            throw error; // error caught in the asyncHandler's catch block
+        }
+    }
+
+    // res.redirect("/articles/" + article.id);
     // When the database builds and saves the new article record, the app should redirect to the newly created article.
     // Sequelize generates an auto-incrementing ID for each model instance or entry created. So in the res.redirect method, I'll add the article id to the URL path by concatenating article.id to the articles path.
 }));
