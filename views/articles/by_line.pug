@@ -1,4 +1,5 @@
 p.by-line
   = article.author
   |  | 
-  = article.createdAt
+  //- = article.createdAt -this is before we change date formatting inside of article.js models inside of Articles instance
+  = article.publishedAt()

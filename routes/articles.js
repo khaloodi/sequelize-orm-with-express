@@ -38,7 +38,8 @@ router.get('/', asyncHandler(async(req, res) => {
     const articles = await Article.findAll({
         // the findAll method takes an options object,  within that object, you can specify any number of criteria to filter the returned results, including their order
         order: [
-            ["createdAt", "DESC"] // display articles in descending order in localhost:3000/articles
+            ["createdAt", "DESC"] // display articles in descending order in localhost:3000/articles, first item in array is the "attribute" we want to "order by"
+            // NOTE: SEQUELIZE already includes the attributes created at and updated at to the "model" aka table
         ]
     });
     // res.render("articles/index", { article: {}, title: "Sequelize-It!" });
