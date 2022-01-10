@@ -23,6 +23,10 @@ module.exports = (sequelize) => {
             return date
                 // to access the value returned by a model instances publishedAt method in the view by calling the method in the view (so inside of file, views, articles, by-line and replace article.createdAt with article.publishedAt)
         }
+        shortDescription() {
+            const shortDesc = this.body.length > 200 ? this.body.substring(0, 200) + '...' : this.body; // this line formats the description on the articles page to shorten the characters to first 200 characters + ... if the description is > 200, otherwise show the entire description
+            return shortDesc
+        }
     }
     Article.init({
         title: Sequelize.STRING,
