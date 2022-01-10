@@ -144,6 +144,7 @@ router.post('/:id/edit', asyncHandler(async(req, res) => {
             article = await Article.build(req.body)
             article.id = req.params.id; // make sure correct article gets updated
             // In this case, when building the Article instance, we explicitly add the article ID, since the ID is in the URL as a parameter (:id) and not in req.body. This ensures that the correct article gets updated.
+            res.render("articles/edit", { article, errors: error.errors, title: "Edit Article" })
         } else {
             throw error;
         }
