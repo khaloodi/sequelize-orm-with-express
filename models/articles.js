@@ -29,7 +29,17 @@ module.exports = (sequelize) => {
         }
     }
     Article.init({
-        title: Sequelize.STRING,
+        // title: Sequelize.STRING,
+        //Change the value of the title model attribute to an object literal. Within the object, add the type attribute and a new validate property. Set validate to an object
+        title: {
+            type: Sequelize.STRING,
+            // Add the notEmpty validator to prevent the title value from being set to an empty string. Then, set a custom error message when validation fails by setting notEmpty to an object containing a msg property set to your custom message:
+            validate: {
+                notEmpty: {
+                    msg: '"Title" is required' // When title is invalid, the custom message "Title" is required will display to the user
+                }
+            }
+        },
         author: Sequelize.STRING,
         body: Sequelize.TEXT
     }, { sequelize });
